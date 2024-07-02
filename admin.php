@@ -1,3 +1,10 @@
+<?php
+    session_start();
+
+    if (!empty($_SESSION['admin'])) {
+        header('location: dashboard.php');
+    }
+?>
 <!doctype html>
 <html lang="en">
 
@@ -16,7 +23,7 @@
         <!-- Icons Css -->
         <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
         <!-- App Css-->
-        <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+        <link href="assets/css/app.css" id="app-style" rel="stylesheet" type="text/css" />
 
     </head>
 
@@ -29,27 +36,42 @@
 
                         <div class="text-center mt-4">
                             <div class="mb-3">
-                                <a href="index.html" class="auth-logo">
-                                    <img src="assets/images/logo-dark.png" height="30" class="logo-dark mx-auto" alt="">
-                                    <img src="assets/images/logo-light.png" height="30" class="logo-light mx-auto" alt="">
+                                <a href="index.php" class="auth-logo">
+                                    <img src="assets/images/logo.png" height="30" class="logo-dark mx-auto" alt="">
+                                    <img src="assets/images/logo.png" height="30" class="logo-light mx-auto" alt="">
                                 </a>
                             </div>
                         </div>
     
                         <h4 class="text-muted text-center font-size-18"><b>Sign In</b></h4>
+
+                        <!-- Error Message -->
+                        <?php
+                            if (isset($_SESSION['login-error'])) {
+                                echo "
+                                <div class='alert alert-danger alert-dismissible fade show m-0 text-center' role='alert'>
+                                    ".$_SESSION['login-error']."
+                                    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+                                </div>
+                                ";
+                                unset($_SESSION['login-error']);
+                            }
+                        ?>
     
                         <div class="p-3">
-                            <form class="form-horizontal mt-3" action="index.html">
+                            <form class="form-horizontal mt-3" method="post" action="includes/login-handel.php">
+
+                            <input type="hidden" name="admin">
     
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
-                                        <input class="form-control" type="text" required="" placeholder="Username">
+                                        <input class="form-control" name="adminEmail" type="email" placeholder="Email">
                                     </div>
                                 </div>
     
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
-                                        <input class="form-control" type="password" required="" placeholder="Password">
+                                        <input class="form-control" name="adminPass" type="password" placeholder="Password">
                                     </div>
                                 </div>
     
